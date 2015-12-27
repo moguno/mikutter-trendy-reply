@@ -26,10 +26,12 @@ class Gdk::ReplyViewer
         Thread.new {
           parent_message.receive_message(true)
         }.next { |message|
-          @messages = Messages.new([message]).freeze
-          render_messages
+          if message
+            @messages = Messages.new([message]).freeze
+            render_messages
+          end
         }.terminate('リプライ描画中にエラーが発生しました')
-      else
+      elsif result
         @messages = Messages.new([result]).freeze
         render_messages
       end
